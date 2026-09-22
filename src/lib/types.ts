@@ -48,11 +48,25 @@ export interface HiddenCostItem {
   id: string;
   label: string;
   suggestedAmount: number;
+  /** Short note on what the suggested amount represents, e.g. "за человека, в одну сторону". */
+  unitNote: string;
+  /** Longer explanation shown in the item's info popover. */
+  helpText: string;
+  /** Whether a "туда и обратно" toggle should double the amount. */
+  supportsRoundTrip: boolean;
+  /** Whether the amount is multiplied by an editable count (people or luggage pieces). */
+  supportsCount: boolean;
+  countLabel?: string;
+  countDefault?: number;
+  /** Resort-fee-style items: multiplied by trip nights (tripDays - 1). */
+  scalesWithNights?: boolean;
 }
 
 export interface HiddenCostEntry {
   enabled: boolean;
   amount: number;
+  roundTrip: boolean;
+  count: number;
 }
 
 export type HiddenCostsState = Record<string, HiddenCostEntry>;

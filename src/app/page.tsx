@@ -9,10 +9,12 @@ import { ComfortScatterChart } from "@/components/ComfortScatterChart";
 import { AutoParamsForm } from "@/components/AutoParamsForm";
 import { HiddenCostsChecklist } from "@/components/HiddenCostsChecklist";
 import { RecommendationBanner } from "@/components/RecommendationBanner";
+import { RegionGuide } from "@/components/RegionGuide";
 import { destinations } from "@/lib/data";
 import { computeDestinationResult } from "@/lib/formulas";
 import { hiddenCostItems, createInitialHiddenCostsState, sumHiddenCosts } from "@/lib/hiddenCosts";
 import { pickRecommendation } from "@/lib/recommendation";
+import { regions } from "@/lib/regions";
 import type { AutoParams } from "@/lib/types";
 
 const MIN_TRIP_DAYS = 7;
@@ -26,7 +28,11 @@ export default function Home() {
   );
   const [hiddenCostsState, setHiddenCostsState] = useState(createInitialHiddenCostsState);
 
-  const hiddenCostsTotal = useMemo(() => sumHiddenCosts(hiddenCostsState), [hiddenCostsState]);
+  const nights = Math.max(tripDays - 1, 0);
+  const hiddenCostsTotal = useMemo(
+    () => sumHiddenCosts(hiddenCostsState, nights),
+    [hiddenCostsState, nights],
+  );
 
   const results = useMemo(
     () =>
@@ -44,18 +50,23 @@ export default function Home() {
   const recommendation = useMemo(() => pickRecommendation(results), [results]);
 
   return (
-    <main className="mx-auto max-w-6xl space-y-10 px-6 py-10">
+    <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:space-y-10 sm:px-6 sm:py-10">
       <header className="space-y-2">
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-xl font-semibold sm:text-2xl">
           Оптимальный маршрут: математика в планировании путешествий
         </h1>
-        <p className="text-muted-foreground max-w-3xl">
+        <p className="text-muted-foreground max-w-3xl text-sm sm:text-base">
           Интерактивный калькулятор к исследовательскому проекту. Семья из 3
           человек, выезд из Москвы. Меняйте длительность поездки, параметры
           автопоездки и чек-лист скрытых расходов — стоимость и коэффициент
           времени K_t пересчитываются сразу.
         </p>
       </header>
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">Справка по направлениям</h2>
+        <RegionGuide regions={regions} />
+      </section>
 
       <section className="grid gap-6 md:grid-cols-2">
         <div className="space-y-3 rounded-lg border p-4">
@@ -86,6 +97,7 @@ export default function Home() {
         <HiddenCostsChecklist
           items={hiddenCostItems}
           state={hiddenCostsState}
+          nights={nights}
           total={hiddenCostsTotal}
           onToggle={(id, enabled) =>
             setHiddenCostsState((prev) => ({
@@ -97,6 +109,18 @@ export default function Home() {
             setHiddenCostsState((prev) => ({
               ...prev,
               [id]: { ...prev[id], amount },
+            }))
+          }
+          onRoundTripChange={(id, roundTrip) =>
+            setHiddenCostsState((prev) => ({
+              ...prev,
+              [id]: { ...prev[id], roundTrip },
+            }))
+          }
+          onCountChange={(id, count) =>
+            setHiddenCostsState((prev) => ({
+              ...prev,
+              [id]: { ...prev[id], count },
             }))
           }
         />
