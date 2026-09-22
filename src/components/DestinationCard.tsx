@@ -42,6 +42,12 @@ export function DestinationCard({ result }: DestinationCardProps) {
           </div>
 
           <div className="border-t pt-3 space-y-2 text-sm">
+            {result.hiddenCostsTotal > 0 && (
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Скрытые расходы (чек-лист):</span>
+                <span className="font-medium">{formatPrice(result.hiddenCostsTotal)}</span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span className="text-muted-foreground">Итого:</span>
               <span className="font-semibold text-lg">{formatPrice(result.totalCost)}</span>

@@ -7,8 +7,12 @@ import { DestinationCard } from "@/components/DestinationCard";
 import { CostBreakdownChart } from "@/components/CostBreakdownChart";
 import { ComfortScatterChart } from "@/components/ComfortScatterChart";
 import { AutoParamsForm } from "@/components/AutoParamsForm";
+import { HiddenCostsChecklist } from "@/components/HiddenCostsChecklist";
+import { RecommendationBanner } from "@/components/RecommendationBanner";
 import { destinations } from "@/lib/data";
 import { computeDestinationResult } from "@/lib/formulas";
+import { hiddenCostItems, createInitialHiddenCostsState, sumHiddenCosts } from "@/lib/hiddenCosts";
+import { pickRecommendation } from "@/lib/recommendation";
 import type { AutoParams } from "@/lib/types";
 
 const MIN_TRIP_DAYS = 7;
@@ -20,6 +24,9 @@ export default function Home() {
   const [autoParams, setAutoParams] = useState<AutoParams>(
     destinations.find((d) => d.id === AUTO_DESTINATION_ID)!.autoParams!,
   );
+  const [hiddenCostsState, setHiddenCostsState] = useState(createInitialHiddenCostsState);
+
+  const hiddenCostsTotal = useMemo(() => sumHiddenCosts(hiddenCostsState), [hiddenCostsState]);
 
   const results = useMemo(
     () =>
@@ -28,10 +35,13 @@ export default function Home() {
           destination,
           tripDays,
           destination.id === AUTO_DESTINATION_ID ? autoParams : undefined,
+          hiddenCostsTotal,
         ),
       ),
-    [tripDays, autoParams],
+    [tripDays, autoParams, hiddenCostsTotal],
   );
+
+  const recommendation = useMemo(() => pickRecommendation(results), [results]);
 
   return (
     <main className="mx-auto max-w-6xl space-y-10 px-6 py-10">
@@ -41,9 +51,9 @@ export default function Home() {
         </h1>
         <p className="text-muted-foreground max-w-3xl">
           Интерактивный калькулятор к исследовательскому проекту. Семья из 3
-          человек, выезд из Москвы. Меняйте длительность поездки и параметры
-          автопоездки — стоимость и коэффициент времени K_t пересчитываются
-          сразу.
+          человек, выезд из Москвы. Меняйте длительность поездки, параметры
+          автопоездки и чек-лист скрытых расходов — стоимость и коэффициент
+          времени K_t пересчитываются сразу.
         </p>
       </header>
 
@@ -70,6 +80,31 @@ export default function Home() {
         </div>
 
         <AutoParamsForm params={autoParams} onChange={setAutoParams} />
+      </section>
+
+      <section>
+        <HiddenCostsChecklist
+          items={hiddenCostItems}
+          state={hiddenCostsState}
+          total={hiddenCostsTotal}
+          onToggle={(id, enabled) =>
+            setHiddenCostsState((prev) => ({
+              ...prev,
+              [id]: { ...prev[id], enabled },
+            }))
+          }
+          onAmountChange={(id, amount) =>
+            setHiddenCostsState((prev) => ({
+              ...prev,
+              [id]: { ...prev[id], amount },
+            }))
+          }
+        />
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">Рекомендуемый вариант</h2>
+        <RecommendationBanner result={recommendation.result} reason={recommendation.reason} />
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

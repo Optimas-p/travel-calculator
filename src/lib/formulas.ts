@@ -43,6 +43,7 @@ export function computeDestinationResult(
   destination: Destination,
   tripDays: number,
   autoParamsOverride?: AutoParams,
+  hiddenCostsTotal = 0,
 ): DestinationResult {
   const scaledCosts = scaleCostsForTripDays(destination.baseCosts, destination.baseTripDays, tripDays);
 
@@ -50,7 +51,7 @@ export function computeDestinationResult(
     ? { ...scaledCosts, transport: calculateAutoTransportCost(autoParamsOverride) }
     : scaledCosts;
 
-  const totalCost = sumCosts(costs);
+  const totalCost = sumCosts(costs) + hiddenCostsTotal;
   const totalTripHours = tripDays * HOURS_PER_DAY;
   const restHours = Math.max(totalTripHours - destination.travelTimeHours, 0);
   const restDays = restHours / HOURS_PER_DAY;
@@ -60,6 +61,7 @@ export function computeDestinationResult(
   return {
     destination,
     costs,
+    hiddenCostsTotal,
     totalCost,
     totalTripHours,
     restHours,

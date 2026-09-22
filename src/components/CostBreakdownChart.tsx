@@ -11,6 +11,7 @@ const COLORS = {
   food: "#f59e0b",
   activities: "#ef4444",
   extra: "#8b5cf6",
+  hiddenCosts: "#64748b",
 };
 
 interface ChartData {
@@ -20,6 +21,7 @@ interface ChartData {
   food: number;
   activities: number;
   extra: number;
+  hiddenCosts: number;
 }
 
 export function CostBreakdownChart({ results }: { results: DestinationResult[] }) {
@@ -30,6 +32,7 @@ export function CostBreakdownChart({ results }: { results: DestinationResult[] }
     food: result.costs.food,
     activities: result.costs.activities,
     extra: result.costs.extra,
+    hiddenCosts: result.hiddenCostsTotal,
   }));
 
   const customTooltip = ({ active, payload }: TooltipContentProps<ValueType, NameType>) => {
@@ -80,6 +83,7 @@ export function CostBreakdownChart({ results }: { results: DestinationResult[] }
           <Bar dataKey="food" stackId="a" fill={COLORS.food} name="Питание" />
           <Bar dataKey="activities" stackId="a" fill={COLORS.activities} name="Развлечения" />
           <Bar dataKey="extra" stackId="a" fill={COLORS.extra} name="Доп. расходы" />
+          <Bar dataKey="hiddenCosts" stackId="a" fill={COLORS.hiddenCosts} name="Скрытые расходы (чек-лист)" />
         </BarChart>
       </ResponsiveContainer>
     </div>

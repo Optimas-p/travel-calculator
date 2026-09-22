@@ -34,6 +34,8 @@ export interface Destination {
 export interface DestinationResult {
   destination: Destination;
   costs: CostBreakdown;
+  /** Sum of checked items from the hidden-costs checklist; already included in totalCost. */
+  hiddenCostsTotal: number;
   totalCost: number;
   totalTripHours: number;
   restHours: number;
@@ -41,3 +43,16 @@ export interface DestinationResult {
   kt: number;
   costPerRestDay: number;
 }
+
+export interface HiddenCostItem {
+  id: string;
+  label: string;
+  suggestedAmount: number;
+}
+
+export interface HiddenCostEntry {
+  enabled: boolean;
+  amount: number;
+}
+
+export type HiddenCostsState = Record<string, HiddenCostEntry>;
