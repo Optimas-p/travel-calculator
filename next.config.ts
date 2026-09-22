@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
+const repoName = "travel-calculator";
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "export",
+  basePath: `/${repoName}`,
+  images: { unoptimized: true },
 };
 
 export default nextConfig;
