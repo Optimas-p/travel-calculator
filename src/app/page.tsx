@@ -132,8 +132,8 @@ export default function Home() {
         <div>
           <h2 className="text-lg font-semibold">Расчёт стоимости по направлениям</h2>
           <p className="text-sm text-muted-foreground">
-            Значок ⓘ у названия направления — краткая справка о регионе:
-            что там смотреть и как добираться.
+            Под названием — краткая справка о регионе; значок ⓘ открывает
+            подробности: достопримечательности, дорога и актуальные риски.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from "recharts";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import type { TooltipContentProps } from "recharts";
 import type { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
 import type { DestinationResult } from "@/lib/types";
@@ -13,6 +13,15 @@ const COLORS = {
   extra: "#8b5cf6",
   hiddenCosts: "#64748b",
 };
+
+const LEGEND_ITEMS: Array<{ key: keyof typeof COLORS; label: string }> = [
+  { key: "transport", label: "Транспорт" },
+  { key: "accommodation", label: "Проживание" },
+  { key: "food", label: "Питание" },
+  { key: "activities", label: "Развлечения" },
+  { key: "extra", label: "Доп. расходы" },
+  { key: "hiddenCosts", label: "Скрытые расходы (чек-лист)" },
+];
 
 interface ChartData {
   name: string;
@@ -70,35 +79,48 @@ export function CostBreakdownChart({ results }: { results: DestinationResult[] }
   };
 
   return (
-    <div className="h-[400px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData} layout="vertical">
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis
-            type="number"
-            tick={{ fill: "var(--muted-foreground)" }}
-            axisLine={{ stroke: "var(--border)" }}
-            tickLine={{ stroke: "var(--border)" }}
-            tickFormatter={(value) => new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(value)}
-          />
-          <YAxis
-            dataKey="name"
-            type="category"
-            width={120}
-            tick={{ fill: "var(--muted-foreground)" }}
-            axisLine={{ stroke: "var(--border)" }}
-            tickLine={{ stroke: "var(--border)" }}
-          />
-          <Tooltip content={customTooltip} cursor={{ fill: "var(--muted)" }} />
-          <Legend wrapperStyle={{ color: "var(--foreground)" }} />
-          <Bar dataKey="transport" stackId="a" fill={COLORS.transport} name="Транспорт" />
-          <Bar dataKey="accommodation" stackId="a" fill={COLORS.accommodation} name="Проживание" />
-          <Bar dataKey="food" stackId="a" fill={COLORS.food} name="Питание" />
-          <Bar dataKey="activities" stackId="a" fill={COLORS.activities} name="Развлечения" />
-          <Bar dataKey="extra" stackId="a" fill={COLORS.extra} name="Доп. расходы" />
-          <Bar dataKey="hiddenCosts" stackId="a" fill={COLORS.hiddenCosts} name="Скрытые расходы (чек-лист)" />
-        </BarChart>
-      </ResponsiveContainer>
+    <div>
+      <div className="h-[340px] w-full sm:h-[360px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={chartData} layout="vertical" margin={{ left: 0, right: 12, top: 4, bottom: 4 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+            <XAxis
+              type="number"
+              tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+              axisLine={{ stroke: "var(--border)" }}
+              tickLine={{ stroke: "var(--border)" }}
+              tickFormatter={(value) => new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(value)}
+            />
+            <YAxis
+              dataKey="name"
+              type="category"
+              width={96}
+              tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+              axisLine={{ stroke: "var(--border)" }}
+              tickLine={{ stroke: "var(--border)" }}
+            />
+            <Tooltip content={customTooltip} cursor={{ fill: "var(--muted)" }} />
+            <Bar dataKey="transport" stackId="a" fill={COLORS.transport} name="Транспорт" />
+            <Bar dataKey="accommodation" stackId="a" fill={COLORS.accommodation} name="Проживание" />
+            <Bar dataKey="food" stackId="a" fill={COLORS.food} name="Питание" />
+            <Bar dataKey="activities" stackId="a" fill={COLORS.activities} name="Развлечения" />
+            <Bar dataKey="extra" stackId="a" fill={COLORS.extra} name="Доп. расходы" />
+            <Bar dataKey="hiddenCosts" stackId="a" fill={COLORS.hiddenCosts} name="Скрытые расходы (чек-лист)" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-sm text-foreground">
+        {LEGEND_ITEMS.map(({ key, label }) => (
+          <li key={key} className="flex items-center gap-1.5">
+            <span
+              className="inline-block size-2.5 shrink-0 rounded-sm"
+              style={{ backgroundColor: COLORS[key] }}
+              aria-hidden
+            />
+            {label}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

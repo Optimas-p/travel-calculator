@@ -36,7 +36,7 @@ export function DestinationCard({ result }: DestinationCardProps) {
           {region && (
             <Popover>
               <PopoverTrigger
-                aria-label={`О регионе: ${region.name}`}
+                aria-label={`Подробнее о регионе: ${region.name}`}
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Info className="size-4" />
@@ -54,6 +54,9 @@ export function DestinationCard({ result }: DestinationCardProps) {
             </Popover>
           )}
         </CardTitle>
+        {region && (
+          <p className="text-xs text-muted-foreground">{region.shortDescription}</p>
+        )}
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
