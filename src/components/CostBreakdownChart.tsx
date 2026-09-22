@@ -41,7 +41,7 @@ export function CostBreakdownChart({ results }: { results: DestinationResult[] }
     const total = payload.reduce((sum, entry) => sum + Number(entry.value ?? 0), 0);
 
     return (
-      <div className="bg-white border border-gray-200 p-4 shadow-lg rounded-md">
+      <div className="rounded-md border border-border bg-popover text-popover-foreground p-4 shadow-lg">
         <p className="text-sm font-semibold mb-2">{(payload[0].payload as ChartData).name}</p>
         {payload.map((entry, index) => (
           <p
@@ -57,7 +57,7 @@ export function CostBreakdownChart({ results }: { results: DestinationResult[] }
             }).format(Number(entry.value ?? 0))}
           </p>
         ))}
-        <p className="text-sm font-semibold mt-2 pt-2 border-t border-gray-200">
+        <p className="text-sm font-semibold mt-2 pt-2 border-t border-border">
           Итого:{" "}
           {new Intl.NumberFormat("ru-RU", {
             style: "currency",
@@ -73,11 +73,24 @@ export function CostBreakdownChart({ results }: { results: DestinationResult[] }
     <div className="h-[400px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} layout="vertical">
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" tickFormatter={(value) => new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(value)} />
-          <YAxis dataKey="name" type="category" width={120} />
-          <Tooltip content={customTooltip} />
-          <Legend />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+          <XAxis
+            type="number"
+            tick={{ fill: "var(--muted-foreground)" }}
+            axisLine={{ stroke: "var(--border)" }}
+            tickLine={{ stroke: "var(--border)" }}
+            tickFormatter={(value) => new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(value)}
+          />
+          <YAxis
+            dataKey="name"
+            type="category"
+            width={120}
+            tick={{ fill: "var(--muted-foreground)" }}
+            axisLine={{ stroke: "var(--border)" }}
+            tickLine={{ stroke: "var(--border)" }}
+          />
+          <Tooltip content={customTooltip} cursor={{ fill: "var(--muted)" }} />
+          <Legend wrapperStyle={{ color: "var(--foreground)" }} />
           <Bar dataKey="transport" stackId="a" fill={COLORS.transport} name="Транспорт" />
           <Bar dataKey="accommodation" stackId="a" fill={COLORS.accommodation} name="Проживание" />
           <Bar dataKey="food" stackId="a" fill={COLORS.food} name="Питание" />

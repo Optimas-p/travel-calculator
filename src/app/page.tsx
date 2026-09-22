@@ -9,6 +9,7 @@ import { ComfortScatterChart } from "@/components/ComfortScatterChart";
 import { AutoParamsForm } from "@/components/AutoParamsForm";
 import { HiddenCostsChecklist } from "@/components/HiddenCostsChecklist";
 import { RecommendationBanner } from "@/components/RecommendationBanner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { destinations } from "@/lib/data";
 import { computeDestinationResult } from "@/lib/formulas";
 import { hiddenCostItems, createInitialHiddenCostsState, sumHiddenCosts } from "@/lib/hiddenCosts";
@@ -49,16 +50,19 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:space-y-10 sm:px-6 sm:py-10">
-      <header className="space-y-2">
-        <h1 className="text-xl font-semibold sm:text-2xl">
-          Оптимальный маршрут: математика в планировании путешествий
-        </h1>
-        <p className="text-muted-foreground max-w-3xl text-sm sm:text-base">
-          Интерактивный калькулятор к исследовательскому проекту. Семья из 3
-          человек, выезд из Москвы. Меняйте длительность поездки, параметры
-          автопоездки и чек-лист скрытых расходов — стоимость и коэффициент
-          времени K_t пересчитываются сразу.
-        </p>
+      <header className="flex items-start justify-between gap-4">
+        <div className="space-y-2">
+          <h1 className="text-xl font-semibold sm:text-2xl">
+            Оптимальный маршрут: математика в планировании путешествий
+          </h1>
+          <p className="text-muted-foreground max-w-3xl text-sm sm:text-base">
+            Интерактивный калькулятор к исследовательскому проекту. Семья из 3
+            человек, выезд из Москвы. Меняйте длительность поездки, параметры
+            автопоездки и чек-лист скрытых расходов — стоимость и коэффициент
+            времени K_t пересчитываются сразу.
+          </p>
+        </div>
+        <ThemeToggle />
       </header>
 
       <section className="grid gap-6 md:grid-cols-2">

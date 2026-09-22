@@ -31,19 +31,35 @@ export function ComfortScatterChart({ results }: ComfortScatterChartProps) {
     <div className="h-[400px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 80 }}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis
             type="number"
             dataKey="kt"
             name="kt"
             domain={[0, 100]}
-            label={{ value: "Коэффициент времени (K_t), %", position: "insideBottom", offset: -5 }}
+            tick={{ fill: "var(--muted-foreground)" }}
+            axisLine={{ stroke: "var(--border)" }}
+            tickLine={{ stroke: "var(--border)" }}
+            label={{
+              value: "Коэффициент времени (K_t), %",
+              position: "insideBottom",
+              offset: -5,
+              fill: "var(--muted-foreground)",
+            }}
           />
           <YAxis
             type="number"
             dataKey="totalCost"
             name="totalCost"
-            label={{ value: "Итоговая стоимость, ₽", angle: -90, position: "insideLeft" }}
+            tick={{ fill: "var(--muted-foreground)" }}
+            axisLine={{ stroke: "var(--border)" }}
+            tickLine={{ stroke: "var(--border)" }}
+            label={{
+              value: "Итоговая стоимость, ₽",
+              angle: -90,
+              position: "insideLeft",
+              fill: "var(--muted-foreground)",
+            }}
           />
           <ZAxis type="number" dataKey="costPerRestDay" range={[400, 2000]} name="costPerRestDay" />
           <Tooltip
@@ -52,11 +68,11 @@ export function ComfortScatterChart({ results }: ComfortScatterChartProps) {
               if (active && payload && payload.length > 0) {
                 const data = payload[0].payload;
                 return (
-                  <div className="bg-white/95 p-3 border border-gray-200 rounded shadow-sm">
+                  <div className="rounded border border-border bg-popover text-popover-foreground p-3 shadow-sm">
                     <div className="text-lg font-semibold">
                       {data.emoji} {data.name}
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Коэффициент времени: {data.kt.toFixed(1)}%
                     </div>
                     <div className="text-sm">
@@ -81,7 +97,7 @@ export function ComfortScatterChart({ results }: ComfortScatterChartProps) {
               <LabelList
                 dataKey="name"
                 position="top"
-                style={{ fontSize: 11 }}
+                style={{ fontSize: 11, fill: "var(--foreground)" }}
               />
             </Scatter>
           ))}
