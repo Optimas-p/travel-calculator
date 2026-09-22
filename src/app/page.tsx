@@ -9,12 +9,10 @@ import { ComfortScatterChart } from "@/components/ComfortScatterChart";
 import { AutoParamsForm } from "@/components/AutoParamsForm";
 import { HiddenCostsChecklist } from "@/components/HiddenCostsChecklist";
 import { RecommendationBanner } from "@/components/RecommendationBanner";
-import { RegionGuide } from "@/components/RegionGuide";
 import { destinations } from "@/lib/data";
 import { computeDestinationResult } from "@/lib/formulas";
 import { hiddenCostItems, createInitialHiddenCostsState, sumHiddenCosts } from "@/lib/hiddenCosts";
 import { pickRecommendation } from "@/lib/recommendation";
-import { regions } from "@/lib/regions";
 import type { AutoParams } from "@/lib/types";
 
 const MIN_TRIP_DAYS = 7;
@@ -62,11 +60,6 @@ export default function Home() {
           времени K_t пересчитываются сразу.
         </p>
       </header>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Справка по направлениям</h2>
-        <RegionGuide regions={regions} />
-      </section>
 
       <section className="grid gap-6 md:grid-cols-2">
         <div className="space-y-3 rounded-lg border p-4">
@@ -131,10 +124,19 @@ export default function Home() {
         <RecommendationBanner result={recommendation.result} reason={recommendation.reason} />
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {results.map((result) => (
-          <DestinationCard key={result.destination.id} result={result} />
-        ))}
+      <section className="space-y-3">
+        <div>
+          <h2 className="text-lg font-semibold">Расчёт стоимости по направлениям</h2>
+          <p className="text-sm text-muted-foreground">
+            Значок ⓘ у названия направления — краткая справка о регионе:
+            что там смотреть и как добираться.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {results.map((result) => (
+            <DestinationCard key={result.destination.id} result={result} />
+          ))}
+        </div>
       </section>
 
       <section className="space-y-3">

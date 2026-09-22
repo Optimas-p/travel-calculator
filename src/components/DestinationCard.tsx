@@ -1,5 +1,8 @@
 import * as React from "react"
+import { Info } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { getRegion } from "@/lib/regions"
 import type { DestinationResult } from "@/lib/types"
 
 const costLabels = [
@@ -22,12 +25,34 @@ interface DestinationCardProps {
 }
 
 export function DestinationCard({ result }: DestinationCardProps) {
+  const region = getRegion(result.destination.regionId)
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
           <span className="text-2xl">{result.destination.emoji}</span>
-          <span>{result.destination.name}</span>
+          <span className="flex-1">{result.destination.name}</span>
+          {region && (
+            <Popover>
+              <PopoverTrigger
+                aria-label={`О регионе: ${region.name}`}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Info className="size-4" />
+              </PopoverTrigger>
+              <PopoverContent className="w-80 space-y-2 text-sm">
+                <p className="font-medium">{region.name}</p>
+                <p className="text-muted-foreground">{region.description}</p>
+                <p>{region.travelNote}</p>
+                {region.fuelNote && (
+                  <p className="rounded-md bg-amber-500/10 p-2 text-xs text-amber-700 dark:text-amber-400">
+                    ⛽ {region.fuelNote}
+                  </p>
+                )}
+              </PopoverContent>
+            </Popover>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>

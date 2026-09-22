@@ -48,3 +48,7 @@ export const regions: RegionInfo[] = [
       "Самый долгий и дорогой перелёт из трёх вариантов (обычно с пересадкой), плюс смена часовых поясов (+4 часа к Москве) — на короткую неделю остаётся меньше времени на адаптацию. По расчётам проекта короткая поездка сюда менее выгодна: разумный горизонт — от 11–14 ночей.",
   },
 ];
+
+export function getRegion(regionId: string): RegionInfo | undefined {
+  return regions.find((region) => region.id === regionId);
+}

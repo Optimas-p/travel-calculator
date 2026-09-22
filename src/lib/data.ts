@@ -8,6 +8,7 @@ import type { Destination } from "./types";
 export const destinations: Destination[] = [
   {
     id: "kislovodsk-train",
+    regionId: "kislovodsk",
     name: "Кисловодск (поезд)",
     emoji: "🚆",
     baseTripDays: 7,
@@ -22,6 +23,7 @@ export const destinations: Destination[] = [
   },
   {
     id: "kislovodsk-auto",
+    regionId: "kislovodsk",
     name: "Кисловодск (авто)",
     emoji: "🚗",
     baseTripDays: 7,
@@ -44,6 +46,7 @@ export const destinations: Destination[] = [
   },
   {
     id: "abkhazia",
+    regionId: "abkhazia",
     name: "Абхазия (Гагра)",
     emoji: "🌊",
     baseTripDays: 7,
@@ -58,6 +61,7 @@ export const destinations: Destination[] = [
   },
   {
     id: "vietnam",
+    regionId: "vietnam",
     name: "Вьетнам (Нячанг)",
     emoji: "🌴",
     baseTripDays: 7,

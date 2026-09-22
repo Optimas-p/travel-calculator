@@ -19,6 +19,8 @@ export interface AutoParams {
 
 export interface Destination {
   id: string;
+  /** Links to RegionInfo.id in lib/regions.ts (kislovodsk-train/auto share one region). */
+  regionId: string;
   name: string;
   emoji: string;
   /** Base costs for the reference trip: 3 people, 7 days / 6 nights. */
